@@ -11,11 +11,11 @@ def main():
         print("3. A quantidade de respostas emitidas pelo servidor até o momento.")
         print("4. Sair")
         solicitacao = int(input(">"))
-        if solicitação not in aux:
-            continue
-        elif solicitacao == 4 :
+        if solicitacao == 4 :
             print("encerrando programa")
             exit(0)
+        elif solicitacao not in aux:
+            continue
         else:
             while True:
                 print("\nDigite qual requisição vc quer fazer\n")
@@ -28,7 +28,8 @@ def main():
                 if opcao == "1":
                     udp(solicitacao)
                 elif opcao == "2":
-                    raw(solicitacao)
+                    #raw(solicitacao)
+                    pass
                 elif opcao == "3":
                     print("\nsaindo")
                     break

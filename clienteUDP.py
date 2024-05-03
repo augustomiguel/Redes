@@ -3,9 +3,9 @@ import struct
 serverName = "15.228.191.109"
 serverPort = 50000
 
-def udp (self):
+def udp (self,opcao):
     clientSocket = socket(AF_INET, SOCK_DGRAM)
-    message = input('Digite string em minusculo:')
+    message = opcao
 
     clientSocket.sendto(message.encode(),(serverName, serverPort))
 
