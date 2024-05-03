@@ -1,12 +1,19 @@
 import socket
 import struct
 
+
+gerar_identificador():
+    return random.randint(1, 65535)
+
 # Define o formato da mensagem
 class Mensagem:
     def __init__(self, tipo, id, payload):
         self.tipo = tipo
         self.id = id
         self.payload = payload
+        mensagemUDP = [24]
+        respotaUDP = [48]
+        mensagemRAW = []
 
     def to_bytes(self):
         # Converte o tipo e o ID em bytes
