@@ -1,7 +1,6 @@
 from clienteUDP import udp
 #from clienteRAW import raw
 
-
 def main():
     aux=[1,2,3,4]
     while True:
