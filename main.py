@@ -72,4 +72,4 @@ servidor_endereco = ('15.228.191.109', 50000)
 
 while True:
     # Solicita o tipo de requisição ao usuário
-    tipo
+    tipo = input("qual solicitação\n>")
