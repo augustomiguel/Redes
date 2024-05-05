@@ -23,29 +23,25 @@ while(True):
     opcao = input("-> ")
     if opcao == "1":
         mensagem_enviada += data
+
+        # Gera um número de 1 a 65535 
         random_number = random.randint(1, 65535)
+        # Transforma o número em hexadecimal
         identificador = hex(random_number)
-        
-        # Remove o '0b' e preenche os números a esquerda até que tenham 16 dígitos
-        identificador = identificador[2:].zfill(16)  
-        primeiro_4bits = int(identificador[:4],16)
-        segundo_4bits = int(identificador[4:8],16)
-        terceiro_4bits = int(identificador[8:12],16)
-        quarto_4bits = int(identificador[12:16],16)
-        
-        print(f'''identificador: {identificador}\n
-        primeiro 4bits: {primeiro_4bits}\n
-        segundo 4bits: {segundo_4bits}\n
-        terceiro 4bits: {terceiro_4bits}\n
-        quarto 4bits: {quarto_4bits}\n
-        ''')
+        # Remove o '0b'
+        identificador = identificador[2:]
+        # utiliza os primeiros 4 bits do número
+        primeiro_byte = "\\x" + identificador[:2]
+        # utiliza os 4 últimos bits do número
+        segundo_byte = "\\x" + identificador[2:4]
 
-
-        mensagem_enviada += identificador
+        # Adiciona o número na mensagem
+        mensagem_enviada += primeiro_byte
+        mensagem_enviada += segundo_byte
        
-
+        # Envia a mensagem 
         udp = SocketUDP()
-        udp.mandar_mensagem("\x00\x00\x11")
+        udp.mandar_mensagem(mensagem_enviada)
         mensagem_recebida = udp.resposta
         print(mensagem_recebida)
         mensagem_enviada = ""
