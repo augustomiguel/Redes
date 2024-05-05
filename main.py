@@ -43,14 +43,61 @@ while(True):
         udp = SocketUDP()
         udp.mandar_mensagem(mensagem_enviada)
         mensagem_recebida = udp.resposta
+        mensagem_recebida = mensagem_recebida[4:-2]
+        mensagem_recebida = mensagem_recebida.decode("utf-8")
         print(mensagem_recebida)
         mensagem_enviada = ""
 
 
     elif opcao == "2":
-        pass
+        mensagem_enviada += frase
+        # Gera um número de 1 a 65535 
+        random_number = random.randint(1, 65535)
+        # Transforma o número em hexadecimal
+        identificador = hex(random_number)
+        # Remove o '0b'
+        identificador = identificador[2:]
+        # utiliza os primeiros 4 bits do número
+        primeiro_byte = "\\x" + identificador[:2]
+        # utiliza os 4 últimos bits do número
+        segundo_byte = "\\x" + identificador[2:4]
+
+        # Adiciona o número na mensagem
+        mensagem_enviada += primeiro_byte
+        mensagem_enviada += segundo_byte
+       
+        # Envia a mensagem 
+        udp = SocketUDP()
+        udp.mandar_mensagem(mensagem_enviada)
+        mensagem_recebida = udp.resposta
+        mensagem_recebida = mensagem_recebida[4:-2]
+        mensagem_recebida = mensagem_recebida.decode("utf-8")
+        print(mensagem_recebida)
+        mensagem_enviada = ""
     elif opcao == "3":
-        pass
+        mensagem_enviada += quantidade
+
+        # Gera um número de 1 a 65535 
+        random_number = random.randint(1, 65535)
+        # Transforma o número em hexadecimal
+        identificador = hex(random_number)
+        # Remove o '0b'
+        identificador = identificador[2:]
+        # utiliza os primeiros 4 bits do número
+        primeiro_byte = "\\x" + identificador[:2]
+        # utiliza os 4 últimos bits do número
+        segundo_byte = "\\x" + identificador[2:4]
+
+        # Adiciona o número na mensagem
+        mensagem_enviada += primeiro_byte
+        mensagem_enviada += segundo_byte
+       
+        # Envia a mensagem 
+        udp = SocketUDP()
+        udp.mandar_mensagem(mensagem_enviada)
+        mensagem_recebida = udp.resposta
+        print(mensagem_recebida)
+        mensagem_enviada = ""
     elif opcao == "4":
         print("Programa finalizado.")
         exit(0)
