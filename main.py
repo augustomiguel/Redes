@@ -96,6 +96,8 @@ while(True):
         udp = SocketUDP()
         udp.mandar_mensagem(mensagem_enviada)
         mensagem_recebida = udp.resposta
+        mensagem_recebida = bytes(mensagem_recebida)
+
         print(mensagem_recebida)
         mensagem_enviada = ""
     elif opcao == "4":
