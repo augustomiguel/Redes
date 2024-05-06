@@ -19,7 +19,7 @@ class SocketRAW:
     def send_message(self, mensagem):
         with self.criar_raw_socket() as socket:  # Usa o gerenciador de contexto para fechamento automático de socket
             # Envia a mensagem para o servidor
-            print("enviando mensagem: ", mensagem, server_address)
+            print("enviando a mensagem: {0} para o endereço: {1}".format( mensagem, server_address))
             socket.sendto(mensagem, (ip_servidor,serverPort))
 
             # Receba a resposta (assumindo que o servidor envie uma resposta)
