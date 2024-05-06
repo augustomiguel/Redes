@@ -8,6 +8,10 @@ serverPort = 50000
 import socket
 import struct
 
+class SocketRAW:
+    def main:
+        pass
+
 def send_message(socket, message, server_address):
     # Convert message to MensagemRAW object
     mensagem_raw = MensagemRAW(message.tipo, message.id, message.payload)
