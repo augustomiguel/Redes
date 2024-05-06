@@ -11,7 +11,6 @@ def ip (udp):
     #codifica cabeçalho
     
     socket_raw = SocketRAW()
-    socket_raw.criar_raw_socket()
     mensagem_recebida = socket_raw.send_message(udp)
     
     #decodifica cabeçalho
