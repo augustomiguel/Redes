@@ -5,14 +5,6 @@ from clienteRAW import SocketRAW
 import binascii
 import random
 
-data = "\x00"
-frase = "\x01"
-quantidade = "\x02"
-requisicao_invalida = "\x03"
-
-mensagem_enviada = ""
-mensagem_recebida = ""
-
 serverName = "15.228.191.109"
 serverPort = 50000
 
@@ -40,6 +32,8 @@ def payload(opcao):
     identificador = random_number.to_bytes(length=2, byteorder="big")
     mensagem_enviada += identificador
 
+    
+
     # decodificar mensagem
     if opcao == "1" or opcao == "2":
         mensagem_recebida = mensagem_recebida[4:-2]
@@ -57,4 +51,12 @@ while(True):
     print("3) A quantidade de respostas emitidas pelo servidor até o momento.")
     print("4) Sair.")
     opcao = input("-> ")
-    payload(opcao)
+    if opcao != "1" or opcao != "2" or opcao != "3" or opcao != "4":
+        print("Opção inválida!")
+        continue
+    else:
+        payload = payload(opcao)
+        udp = udp()
+        ip = ip()
+        udp += payload
+        ip += udp
