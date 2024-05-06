@@ -3,19 +3,41 @@ from clienteUDP import SocketUDP
 import binascii
 import random
 
-data = "\x00"
-frase = "\x01"
-quantidade = "\x02"
-requisicao_invalida = "\x03"
+data = b"\x00"
+frase = b"\x01"
+quantidade = b"\x02"
+requisicao_invalida = b"\x03"
 
-mensagem_enviada = ""
-mensagem_recebida = ""
 
 serverName = "15.228.191.109"
 serverPort = 50000
 
+mensagem_enviada = b""
+
+def enviar_mensagem(opcao):
+    data = "\x00"
+    frase = "\x01"
+    quantidade = "\x02"
+    requisicao_invalida = "\x03"
+
+    mensagem_enviada = ""
+    if opcao == "1":
+        mensagem_enviada += data
+    elif opcao == "2":
+        mensagem_enviada += frase
+    elif opcao == "3":
+        mensagem_enviada += quantidade
+    elif opcao == "4":
+        exit(0)
+    
+    random_number = random.randint(1, 65535)
+    identificador = random_number.to_bytes(length=2, byteorder="big")
+    mensagem_enviada += identificador
+
+
+
 while(True):
-    print("O que você deseja fazer? ")
+    print("\nO que você deseja fazer? ")
     print("1) Solicitar Data e Hora atual.")
     print("2) Uma mensagem motivacional para o fim do semestre.")
     print("3) A quantidade de respostas emitidas pelo servidor até o momento.")
@@ -26,18 +48,11 @@ while(True):
 
         # Gera um número de 1 a 65535 
         random_number = random.randint(1, 65535)
-        # Transforma o número em hexadecimal
-        identificador = hex(random_number)
-        # Remove o '0b'
-        identificador = identificador[2:]
-        # utiliza os primeiros 4 bits do número
-        primeiro_byte = "\\x" + identificador[:2]
-        # utiliza os 4 últimos bits do número
-        segundo_byte = "\\x" + identificador[2:4]
-
-        # Adiciona o número na mensagem
-        mensagem_enviada += primeiro_byte
-        mensagem_enviada += segundo_byte
+        
+        identificador = random_number.to_bytes(length=2, byteorder="big")
+        print(mensagem_enviada)
+        mensagem_enviada += identificador
+        print(mensagem_enviada)
        
         # Envia a mensagem 
         udp = SocketUDP()

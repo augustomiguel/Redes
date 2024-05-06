@@ -10,6 +10,6 @@ class SocketUDP:
         self.serverAddress = ""
 
     def mandar_mensagem(self, mensagem):
-        self.clientSocket.sendto(mensagem.encode(), (self.serverName,self.serverPort))
+        self.clientSocket.sendto(mensagem, (self.serverName,self.serverPort))
         self.resposta, self.serverAddress = self.clientSocket.recvfrom(2048)
         self.clientSocket.close()
