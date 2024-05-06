@@ -1,7 +1,7 @@
 
 
 from socket import *
-from clienteRaw import SocketRAW
+from clienteRAW import SocketRAW
 import binascii
 import random
 

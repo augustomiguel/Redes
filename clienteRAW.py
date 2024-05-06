@@ -9,7 +9,7 @@ import socket
 import struct
 
 class SocketRAW:
-    def main:
+    def main():
         pass
 
 def send_message(socket, message, server_address):
