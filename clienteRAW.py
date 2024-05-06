@@ -9,7 +9,7 @@ class SocketRAW:
 
     def send_message(self, message):
         # Convert message to MensagemRAW object
-        mensagem_raw = MensagemRAW(message.tipo, message.id, message.payload)
+        
 
         # Convert MensagemRAW object to bytes
         message_bytes = mensagem_raw.to_bytes()
