@@ -7,7 +7,7 @@ serverPort = 50000
 class SocketRAW:
     raw_socket = None
 
-    def send_message( message):
+    def send_message(self, message):
         # Convert message to MensagemRAW object
         mensagem_raw = MensagemRAW(message.tipo, message.id, message.payload)
 
@@ -18,7 +18,7 @@ class SocketRAW:
         sel.raw_socket.sendto(message_bytes, server_address)
 
 
-    def criar_raw_socket(protocol=socket.IPPROTO_RAW):
+    def criar_raw_socket(self,protocol=socket.IPPROTO_RAW):
         try:
             # Create a socket with AF_INET (IPv4) address family and SOCK_RAW socket type
             self.raw_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, protocol)
