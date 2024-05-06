@@ -50,12 +50,7 @@ def payload(opcao):
     identificador = random_number.to_bytes(length=2, byteorder="big")
     mensagem_enviada += identificador
 
-<<<<<<< HEAD
     mensagem_recebida = udp(mensagem_enviada)
-=======
-    
-
->>>>>>> c75953208c67aaf5d19380786723f98328e3bbe1
     # decodificar mensagem
     if opcao == "1" or opcao == "2":
         mensagem_recebida = mensagem_recebida[4:-2]
