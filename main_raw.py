@@ -27,7 +27,7 @@ def calcular_checksun (udp,payload):
     #codifica cabeçalho ip para calcular o checksun
     ip_origem = endereco_binario_origem # endereço de origem
     ip_destino = endereco_binario
-    comprimento_udp = comprimento_udp
+    comprimento_udp = comprimento_binario
     mens = ip_origem
     mens += ip_destino
     mens += comprimento_udp
