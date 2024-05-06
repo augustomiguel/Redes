@@ -7,26 +7,23 @@ serverPort = 50000
 class SocketRAW:
     raw_socket = None
 
-    def send_message(self, message):
-        # Convert message to MensagemRAW object
-        
-
-        # Convert MensagemRAW object to bytes
-        message_bytes = mensagem_raw.to_bytes()
+    def send_message(self, mensagem):
+        criar_raw_socket()
 
         # Send the message to the server
-        sel.raw_socket.sendto(message_bytes, server_address)
+        self.raw_socket.sendto(mensagem, server_address)
+        
+        return mensagem_recebida
 
 
-    def criar_raw_socket(self,protocol=socket.IPPROTO_RAW):
+    def criar_raw_socket(self):
         try:
-            # Create a socket with AF_INET (IPv4) address family and SOCK_RAW socket type
-            self.raw_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, protocol)
+            # Cria um soquete com família de endereços AF_INET (IPv4) e tipo de soquete SOCK_RAW e o protocolo IPPROTO_RAW
+            self.raw_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
 
-            # Set SO_REUSEADDR option to allow reusing the same address
+            #Defina a opção SO_REUSEADDR para permitir a reutilização do mesmo endereço
             self.raw_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-            return raw_socket
+            
         except OSError as e:
             raise OSError(f"Failed to create raw socket: {e}")
 
