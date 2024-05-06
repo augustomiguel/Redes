@@ -41,11 +41,11 @@ def calcular_checksun (udp,payload):
         mens+=b"\x00"
     
     for i in range (0,len(mens),2):
-        checksun = mens[i] + mens[i+1]
+        checksun += ((mens[i]<<8) + mens[i+1])
         checksun &= 0xFFFF
 
-        if checksun > 0xFFFF:
-            checksun = (checksun & 0xFFFF0000) + (checksun >> 16) + 1
+        if checksun > 0xFFFF0000:
+            checksun = (checksun & 0xFFFF) + (checksun >> 16) + 1
 
     checksun = ~checksun & 0xFFFF
     return checksun
