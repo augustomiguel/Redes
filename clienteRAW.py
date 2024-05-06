@@ -23,7 +23,7 @@ class SocketRAW:
             socket.sendto(mensagem, (ip_servidor,serverPort))
 
             # Receba a resposta (assumindo que o servidor envie uma resposta)
-            
+            print("esperando resposta")
             mensagem_recebida, _ = socket.recvfrom(4096)  
             print(mensagem_recebida)
             return mensagem_recebida
