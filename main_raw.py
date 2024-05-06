@@ -1,6 +1,6 @@
 
 
-from socket import *
+import socket  
 from clienteRAW import SocketRAW
 import binascii
 import random
@@ -8,44 +8,67 @@ import struct
 
 serverName = "15.228.191.109"
 serverPort = 50000
-    
+ip_origem = str(socket.gethostbyname(socket.gethostname()))
+ip_numerico_origem = [int(x) for x in ip_origem.split('.')]
+# Empacote o endereço IP
+endereco_binario_origem = struct.pack('!BBBB', *ip_numerico_origem)
+
+ip_servidor = "15.228.191.109"
+# Divida o endereço IP em seus componentes numéricos
+ip_numerico = [int(x) for x in ip_servidor.split('.')]
+# Empacote o endereço IP
+endereco_binario = struct.pack('!BBBB', *ip_numerico)
+
+comprimento_udp = "0x000B"
+# Empacote o endereço IP
+comprimento_binario = struct.pack('!BBBB', *ip_numerico)
 
 
-def ip (udp,payload):
-    #codifica cabeçalho
-    ip_origem= b"\x103870" # endereço de origem
-    ip_destino= b"\x38BABC185" 
-    comprimento_udp =b"\x00x000B"
-    mensagem = ip_origem
-    mensagem += ip_destino
-    mensagem += comprimento_udp
-    mensagem += udp
-    mensagem += payload
-    print("ip",mensagem)
+def calcular_checksun (udp,payload):
+    #codifica cabeçalho ip para calcular o checksun
+    ip_origem = endereco_binario_origem # endereço de origem
+    ip_destino = endereco_binario
+    comprimento_udp = comprimento_binario
+    mens = ip_origem
+    mens += ip_destino
+    mens += comprimento_udp
+    mens += udp
+    mens += payload
+    print("ip",mens)
     
     checksun = 0
-
-    # Iterate over each byte in the message
-    for byte in mensagem:
-        checksun += byte  # Add the byte value to the checksum
-        checksun &= 0xFFFF  # Apply wraparound (modulo 2^16)
-        if checksun & 0xFFFF0000:
-            checksun = (checksun & 0xFFFF0000) + 1
     
+    if (len(mens) % 2 !=0):
+        mens+=b"\x00"
+    
+    for i in range (0,len(mens),2):
+        checksun = mens[i] + mens[i+1]
+        checksun &= 0xFFFF
+
+        if checksun > 0xFFFF:
+            checksun = (checksun & 0xFFFF0000) + (checksun >> 16) + 1
+
+    checksun = ~checksun & 0xFFFF
     return checksun
     
 def udp(payload):
     #codifica cabeçalho
-    porta_origem = b"\x1F90"
-    porta_destino = b"\x00xC350"
-    comprimento_do_seguimento = b"\x00x000B"
+    porta_origem = struct.pack('>H',8080)
+    print("origem",porta_origem)
+    porta_destino = struct.pack('>H',serverPort)
+    print("destino",porta_destino)
+    comprimento_do_seguimento = comprimento_binario
     mensagem = porta_origem
     mensagem += porta_destino 
     mensagem += comprimento_do_seguimento
-    check = ip(mensagem,payload)
+    print(mensagem)
+    cheacksun = "0x0000"
+    check = calcular_checksun(mensagem,payload)
     print(check)
     checksun = struct.pack('>H',check )
+    print(checksun)
     mensagem += checksun
+    print("check",mensagem )
     
     mensagem +=payload
     print("udp",mensagem)
@@ -58,6 +81,9 @@ def udp(payload):
     mensagem_recebida = mensagem_recebida[-8:]
     print("upd resposta",mensagem_recebida)
     return mensagem_recebida
+
+
+
 
 
 def payload(opcao):
