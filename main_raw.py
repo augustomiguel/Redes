@@ -7,6 +7,24 @@ import random
 
 serverName = "15.228.191.109"
 serverPort = 50000
+def ip (udp):
+    #codifica cabeçalho
+    
+    socket_raw = SocketRAW()
+    socket_raw.criar_raw_socket()
+    mensagem_recebida = socket_raw.send_message(udp)
+    
+    #decodifica cabeçalho
+    
+    return mensagem_recebida
+    
+def udp(payload):
+    #codifica cabeçalho
+    
+    
+    mensagem_recebida = ip(payload)
+    #decodifica cabeçalho
+    return mensagem_recebida
 
 
 def payload(opcao):
@@ -32,8 +50,7 @@ def payload(opcao):
     identificador = random_number.to_bytes(length=2, byteorder="big")
     mensagem_enviada += identificador
 
-    
-
+    mensagem_recebida = udp(mensagem_enviada)
     # decodificar mensagem
     if opcao == "1" or opcao == "2":
         mensagem_recebida = mensagem_recebida[4:-2]
