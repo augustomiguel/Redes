@@ -98,8 +98,6 @@ def payload(opcao):
         mensagem_enviada += frase
     elif opcao == "3":
         mensagem_enviada += quantidade
-    elif opcao == "4":
-        exit(0)
     else:
         print("Opção inválida!")
         return
@@ -128,6 +126,8 @@ while(True):
     print("3) A quantidade de respostas emitidas pelo servidor até o momento.")
     print("4) Sair.")
     opcao = input("-> ")
-
+    if opcao== 4:
+        print("encerrando programa!")
     payload = payload(opcao)
     print("payload",payload)
+    opcao=None
