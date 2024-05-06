@@ -6,7 +6,6 @@ import binascii
 import random
 import struct
 
-serverName = "15.228.191.109"
 serverPort = 50000
 ip_origem = str(socket.gethostbyname(socket.gethostname()))
 ip_numerico_origem = [int(x) for x in ip_origem.split('.')]
@@ -28,7 +27,7 @@ def calcular_checksun (udp,payload):
     #codifica cabeçalho ip para calcular o checksun
     ip_origem = endereco_binario_origem # endereço de origem
     ip_destino = endereco_binario
-    comprimento_udp = comprimento_binario
+    comprimento_udp = comprimento_udp
     mens = ip_origem
     mens += ip_destino
     mens += comprimento_udp
