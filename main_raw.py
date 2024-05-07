@@ -113,11 +113,9 @@ def processar_resposta(mensagem_recebida,opcao):
         mensagem_recebida = mensagem_recebida.decode("utf-8")
     elif opcao == "3":
         mensagem_recebida = mensagem_recebida[-4:]
-        mensagem_recebida = int.from_bytes(
-            mensagem_recebida, byteorder="big", signed=False
-        )
-    # print("payload recebido",mensagem_recebida)
-    return payload
+        mensagem_recebida = int.from_bytes(mensagem_recebida, byteorder="big", signed=False)
+    print("payload recebido",mensagem_recebida)
+    return mensagem_recebida
 
 
 def main():
@@ -130,6 +128,8 @@ def main():
         opcao = input("-> ")
         if opcao == 4:
             print("encerrando programa!")
+            break
+            exit(0)
         payload = criar_payload(opcao)
         cabecalho = cabecalho_udp(payload)
 
@@ -145,8 +145,11 @@ def main():
 
         # recebe a resposta
         resposta, _ = socket_cliente.recvfrom(5000)
+        
+        #print(resposta)
+        
         resposta =  processar_resposta(resposta,opcao)
-        print(resposta)
+        print("\n{0}\n\n".format(resposta))
         opcao = None
 
 
