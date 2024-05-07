@@ -106,7 +106,6 @@ def criar_payload(opcao):
 
 def processar_resposta():
     pass
-    # TODO
     # mensagem_recebida = udp(mensagem_enviada)
 
     # # decodificar mensagem
