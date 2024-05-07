@@ -50,8 +50,7 @@ def udp(payload):
     porta_destino = struct.pack('>H',50000)
     print("porta destino",porta_destino)
     comprimento_do_seguimento = struct.pack(">H", 11)
-    
-    
+    print("Comprimento:" , comprimento_do_seguimento )
     
     mensagem = porta_origem
     mensagem += porta_destino 
@@ -69,9 +68,6 @@ def udp(payload):
     
     mensagem +=payload
     print("datagrama : ",mensagem)
-    
-    
-    
     
     #envia mensagem 
     socket_raw = SocketRAW()
@@ -118,6 +114,7 @@ def payload(opcao):
     print("payload",mensagem_enviada)
     
     mensagem_recebida = udp(mensagem_enviada)
+    
     # decodificar mensagem
     if opcao == "1" or opcao == "2":
         mensagem_recebida = mensagem_recebida[4:-2]
