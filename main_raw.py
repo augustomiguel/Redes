@@ -1,12 +1,10 @@
-
-
 import socket  
 from clienteRAW import SocketRAW
 import binascii
 import random
 import struct
 
-serverPort=50000
+serverPort = 50000
 
 def calcular_checksun (udp,payload):
     #codifica cabeçalho ip para calcular o checksun

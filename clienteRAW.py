@@ -2,7 +2,6 @@ import socket
 import struct
 
 
-
 ip_servidor = "15.228.191.109"
 # Divida o endereço IP em seus componentes numéricos
 ip_numerico = [int(x) for x in ip_servidor.split('.')]
