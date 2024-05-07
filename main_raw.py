@@ -1,6 +1,6 @@
-import socket
 import random
 import struct
+import socket
 
 serverIP = "15.228.191.109"
 serverPort = 50000
@@ -104,21 +104,22 @@ def criar_payload(opcao):
     return payload
 
 
-def processar_resposta(mensagem_recebida,opcao):
+def processar_resposta():
     pass
-    
-    # decodificar mensagem
-    if opcao == "1" or opcao == 2 :
-        mensagem_recebida = mensagem_recebida[32:-2]
-        
-        mensagem_recebida = mensagem_recebida.decode("utf-8")
-        #mensagem_recebida = struct.unpack(">BH",mensagem_recebida)
-        print("mensagem recebida: ", mensagem_recebida)
-    elif opcao == "3":
-        mensagem_recebida = mensagem_recebida[-4:]
-        mensagem_recebida = int.from_bytes(mensagem_recebida, byteorder="big", signed=False)
-    print("payload recebido",mensagem_recebida)
-    return mensagem_recebida
+    # TODO
+    # mensagem_recebida = udp(mensagem_enviada)
+
+    # # decodificar mensagem
+    # if opcao == "1" or opcao == "2":
+    #     mensagem_recebida = mensagem_recebida[4:-2]
+    #     mensagem_recebida = mensagem_recebida.decode("utf-8")
+    # elif opcao == "3":
+    #     mensagem_recebida = mensagem_recebida[-4:]
+    #     mensagem_recebida = int.from_bytes(
+    #         mensagem_recebida, byteorder="big", signed=False
+    #     )
+    # # print("payload recebido",mensagem_recebida)
+    # return payload
 
 
 def main():
@@ -131,13 +132,14 @@ def main():
         opcao = input("-> ")
         if opcao == 4:
             print("encerrando programa!")
-            break
-            exit(0)
         payload = criar_payload(opcao)
         cabecalho = cabecalho_udp(payload)
-
+        print("payload: ",payload)
+        print("udp: ",cabecalho)
         mensagem = cabecalho + payload
-
+        print("mensagem: ", mensagem)
+        
+        
         socket_cliente = socket.socket(
             socket.AF_INET,
             socket.SOCK_RAW,
@@ -148,12 +150,7 @@ def main():
 
         # recebe a resposta
         resposta, _ = socket_cliente.recvfrom(5000)
-        
-        #print(resposta)
-        
-        resposta =  processar_resposta(resposta,opcao)
-        print("\n{0}\n\n".format(resposta))
+        print(resposta)
         opcao = None
-
 
 main()
