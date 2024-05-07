@@ -104,7 +104,7 @@ def criar_payload(opcao):
     return payload
 
 
-def processar_resposta():
+def processar_resposta(opcao,mensagem_recebida):
     pass
     # mensagem_recebida = udp(mensagem_enviada)
 
@@ -129,8 +129,9 @@ def main():
         print("3) A quantidade de respostas emitidas pelo servidor até o momento.")
         print("4) Sair.")
         opcao = input("-> ")
-        if opcao == 4:
+        if opcao == '4':
             print("encerrando programa!")
+            return
         payload = criar_payload(opcao)
         cabecalho = cabecalho_udp(payload)
         print("payload: ",payload)
@@ -150,6 +151,7 @@ def main():
         # recebe a resposta
         resposta, _ = socket_cliente.recvfrom(5000)
         print(resposta)
+        processar_resposta(opcao,resposta)
         opcao = None
 
 main()
