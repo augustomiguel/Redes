@@ -7,29 +7,24 @@ import random
 import struct
 
 serverPort = 50000
-ip_origem = str(socket.gethostbyname(socket.gethostname()))
-ip_numerico_origem = [int(x) for x in ip_origem.split('.')]
-# Empacote o endereço IP
-endereco_binario_origem = struct.pack('!BBBB', *ip_numerico_origem)
 
-ip_servidor = "15.228.191.109"
-# Divida o endereço IP em seus componentes numéricos
-ip_numerico = [int(x) for x in ip_servidor.split('.')]
-# Empacote o endereço IP
-endereco_binario = struct.pack('!BBBB', *ip_numerico)
 
-comprimento_udp = "0x000B"
-# Empacote o endereço IP
-comprimento_binario = struct.pack('!BBBB', *ip_numerico)
+
+
 
 
 def calcular_checksun (udp,payload):
     #codifica cabeçalho ip para calcular o checksun
-    ip_origem = endereco_binario_origem # endereço de origem
-    ip_destino = endereco_binario
-    comprimento_udp = comprimento_binario
-    mens = ip_origem
+    ip_origem = str(socket.gethostbyname(socket.gethostname()))
+    ip_servidor = "15.228.191.109"
+    endereco_binario_origem =  int.from_bytes(socket.inet_aton(ip_origem),byteorder='big')
+    ip_destino = int.from_bytes(socket.inet_aton(ip_servidor),byteorder='big')  
+    protocolo_byte = struct.pack("<H",17)
+    comprimento_udp = struct.pack('>H', 11)
+    
+    mens = endereco_binario_origem
     mens += ip_destino
+    mens = protocolo_byte
     mens += comprimento_udp
     mens += udp
     mens += payload
@@ -38,7 +33,8 @@ def calcular_checksun (udp,payload):
     checksun = 0
     
     if (len(mens) % 2 !=0):
-        mens+=b"\x00"
+        mens+=b"\x00" #* (len(mens) % 2)
+        
     
     for i in range (0,len(mens),2):
         checksun += ((mens[i]<<8) + mens[i+1])
@@ -53,26 +49,28 @@ def calcular_checksun (udp,payload):
 def udp(payload):
     #codifica cabeçalho
     porta_origem = struct.pack('>H',8080)
-    print("origem",porta_origem)
+    print("porta origem",porta_origem)
     porta_destino = struct.pack('>H',serverPort)
-    print("destino",porta_destino)
-    comprimento_do_seguimento = comprimento_binario
+    print("porta destino",porta_destino)
+    comprimento_do_seguimento = struct.pack('>H',11)
     mensagem = porta_origem
     mensagem += porta_destino 
     mensagem += comprimento_do_seguimento
-    print(mensagem)
-    cheacksun = "0x0000"
+    print("cabeçalho udp",mensagem)
+    cheacksun = b"\x00x0000"
     check = calcular_checksun(mensagem,payload)
-    print(check)
-    checksun = struct.pack('>H',check )
-    print(checksun)
+    print("checksum",check)
+    #envia para colocar o pseudoIP e cacular o checksum
+    
+    checksun = struct.pack('!H',check )
+    print("checksum byte",checksun)
     mensagem += checksun
     print("check",mensagem )
     
     mensagem +=payload
     print("udp",mensagem)
     
-    #envia mensagem para colocar o cabeçalho ip
+    #envia mensagem 
     socket_raw = SocketRAW()
     mensagem_recebida = socket_raw.send_message(mensagem)
     
@@ -86,25 +84,32 @@ def udp(payload):
 
 
 def payload(opcao):
-    data = b"\x00"
-    frase = b"\x01"
-    quantidade = b"\x02"
-    requisicao_invalida = b"\x03"
+    data = 0
+    frase = 1
+    quantidade = 2
+    requisicao_invalida = 3
+    tipo_requisicao = 0
 
-    mensagem_enviada = b""
+    
     if opcao == "1":
-        mensagem_enviada += data
+        mensagem_enviada = tipo_requisicao | data
     elif opcao == "2":
-        mensagem_enviada += frase
+        mensagem_enviada = tipo_requisicao | frase
     elif opcao == "3":
-        mensagem_enviada += quantidade
+        mensagem_enviada = tipo_requisicao | quantidade
     else:
         print("Opção inválida!")
         return
     #codificar mensagem
+    
     random_number = random.randint(1, 65535)
-    identificador = random_number.to_bytes(length=2, byteorder="big")
-    mensagem_enviada += identificador
+    print(f'identificador: {random_number}')
+    identificador = random_number
+    mensagem_enviada = struct.pack(">BH", mensagem_enviada, identificador)
+    
+    print(f'tipo requisicao: {tipo_requisicao}')
+    print(f'tipo mensagem: {mensagem_enviada[2:]}')
+    print(f'identificador: {identificador}')
     print("payload",mensagem_enviada)
     
     mensagem_recebida = udp(mensagem_enviada)
