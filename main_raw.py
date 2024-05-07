@@ -115,9 +115,11 @@ def processar_resposta(mensagem_recebida,opcao):
         #mensagem_recebida = struct.unpack(">BH",mensagem_recebida)
         print("mensagem recebida: ", mensagem_recebida)
     elif opcao == 2:
+        pass
         # mensagem_recebida = mensagem_recebida[4:-1]
         # mensagem_recebida = mensagem_recebida.decode("utf-8")
     elif opcao == "3":
+        pass
         # mensagem_recebida = mensagem_recebida[-4:]
         # mensagem_recebida = int.from_bytes(mensagem_recebida, byteorder="big", signed=False)
     print("payload recebido",mensagem_recebida)
@@ -154,7 +156,7 @@ def main():
         
         #print(resposta)
         
-        resposta =  processar_resposta(resposta,opcao)
+        #resposta =  processar_resposta(resposta,opcao)
         print("\n{0}\n\n".format(resposta))
         opcao = None
 
