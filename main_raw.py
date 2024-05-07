@@ -10,22 +10,26 @@ serverPort=50000
 
 def calcular_checksun (udp,payload):
     #codifica cabeçalho ip para calcular o checksun
-    ip_origem = str(socket.gethostbyname(socket.gethostname()))
     ip_servidor = "15.228.191.109"
+    ip_destino = int.from_bytes(socket.inet_aton(ip_servidor),byteorder='big')
+    
+    ip_origem = str(socket.gethostbyname(socket.gethostname()))
     endereco_binario_origem =  int.from_bytes(socket.inet_aton(ip_origem),byteorder='big')
-    ip_destino = int.from_bytes(socket.inet_aton(ip_servidor),byteorder='big')  
+    
     protocolo_byte = b"\x00x0011"
     comprimento_udp = struct.pack('>H', 11)
-    
+    check = b"\x00"
+   
     mens = endereco_binario_origem
     mens += ip_destino
     mens = protocolo_byte
     mens += comprimento_udp
     print("cabeçalho ip: ", mens)
     mens += udp
+    mens += check
     print("cabeçalho ip + udp: ", mens)
     mens += payload
-    print("ip",mens)
+    
     
     checksun = 0
     
