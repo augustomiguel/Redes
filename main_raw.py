@@ -108,12 +108,18 @@ def processar_resposta(mensagem_recebida,opcao):
     pass
     
     # decodificar mensagem
-    if opcao == "1" or opcao == "2":
+    if opcao == "1" :
         mensagem_recebida = mensagem_recebida[4:-2]
-        mensagem_recebida = mensagem_recebida.decode("utf-8")
+        print(mensagem_recebida)
+        #mensagem_recebida = mensagem_recebida.decode("utf-8")
+        #mensagem_recebida = struct.unpack(">BH",mensagem_recebida)
+        print("mensagem recebida: ", mensagem_recebida)
+    elif opcao == 2:
+        # mensagem_recebida = mensagem_recebida[4:-1]
+        # mensagem_recebida = mensagem_recebida.decode("utf-8")
     elif opcao == "3":
-        mensagem_recebida = mensagem_recebida[-4:]
-        mensagem_recebida = int.from_bytes(mensagem_recebida, byteorder="big", signed=False)
+        # mensagem_recebida = mensagem_recebida[-4:]
+        # mensagem_recebida = int.from_bytes(mensagem_recebida, byteorder="big", signed=False)
     print("payload recebido",mensagem_recebida)
     return mensagem_recebida
 
