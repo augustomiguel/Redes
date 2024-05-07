@@ -15,7 +15,6 @@ def calcular_checksun (udp,payload):
     
     ip_origem = str(socket.gethostbyname(socket.gethostname()))
     endereco_binario_origem =  int.from_bytes(socket.inet_aton(ip_origem),byteorder='big')
-    
     protocolo_byte = b"\x00x0011"
     comprimento_udp = struct.pack('>H', 11)
     check = b"\x00"
