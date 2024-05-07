@@ -6,12 +6,7 @@ import binascii
 import random
 import struct
 
-serverPort = 50000
-
-
-
-
-
+serverPort=50000
 
 def calcular_checksun (udp,payload):
     #codifica cabeçalho ip para calcular o checksun
@@ -19,14 +14,16 @@ def calcular_checksun (udp,payload):
     ip_servidor = "15.228.191.109"
     endereco_binario_origem =  int.from_bytes(socket.inet_aton(ip_origem),byteorder='big')
     ip_destino = int.from_bytes(socket.inet_aton(ip_servidor),byteorder='big')  
-    protocolo_byte = struct.pack("<H",17)
+    protocolo_byte = b"\x00x0011"
     comprimento_udp = struct.pack('>H', 11)
     
     mens = endereco_binario_origem
     mens += ip_destino
     mens = protocolo_byte
     mens += comprimento_udp
+    print("cabeçalho ip: ", mens)
     mens += udp
+    print("cabeçalho ip + udp: ", mens)
     mens += payload
     print("ip",mens)
     
@@ -48,11 +45,14 @@ def calcular_checksun (udp,payload):
     
 def udp(payload):
     #codifica cabeçalho
-    porta_origem = struct.pack('>H',8080)
+    porta_origem = struct.pack('>H',59155)
     print("porta origem",porta_origem)
-    porta_destino = struct.pack('>H',serverPort)
+    porta_destino = struct.pack('>H',50000)
     print("porta destino",porta_destino)
-    comprimento_do_seguimento = struct.pack('>H',11)
+    comprimento_do_seguimento = struct.pack(">H", 11)
+    
+    
+    
     mensagem = porta_origem
     mensagem += porta_destino 
     mensagem += comprimento_do_seguimento
@@ -68,7 +68,10 @@ def udp(payload):
     print("check",mensagem )
     
     mensagem +=payload
-    print("udp",mensagem)
+    print("datagrama : ",mensagem)
+    
+    
+    
     
     #envia mensagem 
     socket_raw = SocketRAW()
@@ -93,22 +96,24 @@ def payload(opcao):
     
     if opcao == "1":
         mensagem_enviada = tipo_requisicao | data
+        print("tipo data:",data)
     elif opcao == "2":
         mensagem_enviada = tipo_requisicao | frase
+        print("tipo frase:",frase)
     elif opcao == "3":
         mensagem_enviada = tipo_requisicao | quantidade
+        print("tipo quantidade:",quantidade)
     else:
         print("Opção inválida!")
         return
     #codificar mensagem
     
     random_number = random.randint(1, 65535)
-    print(f'identificador: {random_number}')
-    identificador = random_number
+    #print(f'identificador: {random_number}')
+    identificador = 60000
     mensagem_enviada = struct.pack(">BH", mensagem_enviada, identificador)
     
     print(f'tipo requisicao: {tipo_requisicao}')
-    print(f'tipo mensagem: {mensagem_enviada[2:]}')
     print(f'identificador: {identificador}')
     print("payload",mensagem_enviada)
     
