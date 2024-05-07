@@ -13,7 +13,6 @@ address = "15228191109"
 serverPort = 50000
 server_address = (endereco_binario, serverPort)
 
-print("Endereço IP empacotado:", endereco_binario)
 class SocketRAW:
 
     def send_message(self, mensagem):
