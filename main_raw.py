@@ -39,6 +39,10 @@ def calcular_checksum(
         + porta_destino
         + payload
     )
+    
+    dados_checksum += struct.pack(">H",checksum)
+    print("dados_checksum",dados_checksum)
+    
     if len(dados_checksum) % 2 == 1:
         dados_checksum += b"\x00"
 
@@ -73,7 +77,7 @@ def cabecalho_udp(payload):
         porta_destino,
         payload,
     )
-
+    get_checksum = int(get_checksum)
     checksum = struct.pack(">H", get_checksum)
 
     cabecalho_udp = porta_origem + porta_destino + comprimento_do_seguimento + checksum
@@ -105,20 +109,17 @@ def criar_payload(opcao):
 
 
 def processar_resposta(opcao,mensagem_recebida):
-    pass
     # mensagem_recebida = udp(mensagem_enviada)
 
-    # # decodificar mensagem
-    # if opcao == "1" or opcao == "2":
-    #     mensagem_recebida = mensagem_recebida[4:-2]
-    #     mensagem_recebida = mensagem_recebida.decode("utf-8")
-    # elif opcao == "3":
-    #     mensagem_recebida = mensagem_recebida[-4:]
-    #     mensagem_recebida = int.from_bytes(
-    #         mensagem_recebida, byteorder="big", signed=False
-    #     )
-    # # print("payload recebido",mensagem_recebida)
-    # return payload
+    # decodificar mensagem
+    if opcao == "1" or opcao == "2":
+        mensagem_recebida = mensagem_recebida[28:-2]
+        mensagem_recebida = mensagem_recebida.decode("utf-8")
+    elif opcao == "3":
+        mensagem_recebida = mensagem_recebida[-4:]
+        mensagem_recebida = int.from_bytes(mensagem_recebida, byteorder="big", signed=False)
+    print("payload recebido",mensagem_recebida)
+    return payload
 
 
 def main():
@@ -146,12 +147,15 @@ def main():
             socket.IPPROTO_UDP,
         )
 
-        socket_cliente.sendto(mensagem, (serverIP, serverPort))
-
+        socket_cliente.sendto(mensagem, (serverIP, serverPort))        
+        
         # recebe a resposta
-        resposta, _ = socket_cliente.recvfrom(5000)
+        resposta, _ = socket_cliente.recvfrom(4000)
         print(resposta)
-        processar_resposta(opcao,resposta)
+        # processar_resposta(opcao,resposta)
+        
         opcao = None
 
+    
+    
 main()
